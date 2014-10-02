@@ -18,8 +18,7 @@ import jdraw.framework.FigureHandle;
 import jdraw.framework.FigureListener;
 import jdraw.std.StdDrawModel;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
 public class DrawModelTest {
 
