@@ -106,8 +106,7 @@ public class DrawModelTest {
 		m.addFigure(f);
 		m.addModelChangeListener(l);
 		m.addFigure(f);
-		assertTrue("no notification if figure is already contained in model",
-				cnt == 0);
+		assertTrue("no notification if figure is already contained in model", cnt == 0);
 	}
 
 	@Test
@@ -130,9 +129,7 @@ public class DrawModelTest {
 		};
 		m.addModelChangeListener(l);
 		m.removeFigure(f);
-		assertTrue(
-				"no notificatoin expected, figure was not contained in model",
-				cnt == 0);
+		assertTrue("no notificatoin expected, figure was not contained in model", cnt == 0);
 	}
 
 	@Test

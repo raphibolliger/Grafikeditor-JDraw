@@ -5,6 +5,7 @@
 
 package jdraw.std;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import jdraw.framework.*;
@@ -24,35 +25,38 @@ public class StdDrawModel implements DrawModel, FigureListener {
 
 	@Override
 	public void addFigure(Figure f) {
-        f.addFigureListener(this);
-        figures.add(f);
-        System.out.println("Figure added");
-        for(DrawModelListener l : drawModelListeners) l.modelChanged(new DrawModelEvent(this, f, DrawModelEvent.Type.FIGURE_ADDED));
+
+        if (!figures.contains(f)) {
+            f.addFigureListener(this);
+            figures.add(f);
+            for (DrawModelListener l : drawModelListeners) l.modelChanged(new DrawModelEvent(this, f, DrawModelEvent.Type.FIGURE_ADDED));
+        }
 	}
 
 	@Override
 	public Iterable<Figure> getFigures() {
         return figures;
-		//System.out.println("StdDrawModel.getFigures has to be implemented");
 	}
 
 	@Override
 	public void removeFigure(Figure f) {
-        figures.remove(f);
-        for(DrawModelListener l : drawModelListeners) l.modelChanged(new DrawModelEvent(this, f, DrawModelEvent.Type.FIGURE_REMOVED));
-		System.out.println("Figure removed");
+
+        if (figures.contains(f)) {
+            f.removeFigureListener(this);
+            figures.remove(f);
+            for(DrawModelListener l : drawModelListeners) l.modelChanged(new DrawModelEvent(this, f, DrawModelEvent.Type.FIGURE_REMOVED));
+        }
+
 	}
 
 	@Override
 	public void addModelChangeListener(DrawModelListener listener) {
 		drawModelListeners.add(listener);
-		//System.out.println("StdDrawModel.addModelChangeListener has to be implemented");
 	}
 
 	@Override
 	public void removeModelChangeListener(DrawModelListener listener) {
 		drawModelListeners.remove(listener);
-		//System.out.println("StdDrawModel.removeModelChangeListener has to be implemented");
 	}
 
 	/** The draw command handler. Initialized here with a dummy implementation. */
@@ -69,14 +73,23 @@ public class StdDrawModel implements DrawModel, FigureListener {
 
 	@Override
 	public void setFigureIndex(Figure f, int index) {
-		// TODO to be implemented
-		System.out.println("StdDrawModel.setFigureIndex has to be implemented");
+        if (!figures.contains(f))
+            throw new IllegalArgumentException("figure dosen't exist!");
+        if (index > figures.size())
+            throw new ArrayIndexOutOfBoundsException("figure index doesn't exist");
+
+        figures.remove(f);
+        figures.add(index, f);
+        for(DrawModelListener l : drawModelListeners) l.modelChanged(new DrawModelEvent(this, f, DrawModelEvent.Type.DRAWING_CHANGED));
+
 	}
 
 	@Override
 	public void removeAllFigures() {
-		// TODO to be implemented  
-		System.out.println("StdDrawModel.removeAllFigures has to be implemented");
+        Iterator<Figure> it = figures.iterator();
+        while (it.hasNext()) it.next().removeFigureListener(this);
+        figures.clear();
+        for(DrawModelListener l : drawModelListeners) l.modelChanged(new DrawModelEvent(this, null, DrawModelEvent.Type.DRAWING_CLEARED));
 	}
 
     @Override

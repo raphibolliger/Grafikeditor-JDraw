@@ -57,11 +57,15 @@ public class Rect implements Figure {
 	@Override
 	public void setBounds(Point origin, Point corner) {
 		rectangle.setFrameFromDiagonal(origin, corner);
+        for(FigureListener l : figureListeners) l.figureChanged(new FigureEvent(this));
 
 	}
 
 	@Override
 	public void move(int dx, int dy) {
+
+        if (dx == 0 && dy == 0)
+            return;
 		rectangle.setLocation(rectangle.x + dx, rectangle.y + dy);
         for(FigureListener l : figureListeners) l.figureChanged(new FigureEvent(this));
 	}

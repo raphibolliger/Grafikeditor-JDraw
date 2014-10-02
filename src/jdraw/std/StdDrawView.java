@@ -38,7 +38,7 @@ import jdraw.framework.PointConstrainer;
  * @author Dominik Gruntz
  * @version 2.0, 26.04.01
  */
-public final class StdDrawView extends JComponent implements DrawView, DrawModelListener {
+public final class StdDrawView extends JComponent implements DrawView {
 	/** Space in pixels around the minimal bounding box of all figures. */
 	private static final int BOUNDING_BOX_PADDING = 10;
 
@@ -73,7 +73,23 @@ public final class StdDrawView extends JComponent implements DrawView, DrawModel
 
 		this.model = aModel;
 
-		this.model.addModelChangeListener(this);
+		ml = new DrawModelListener() {
+			public void modelChanged(DrawModelEvent e) {
+				Dimension size = getPreferredSize();
+				setPreferredSize(size);
+				revalidate();
+
+				if (e.getType() == DrawModelEvent.Type.FIGURE_REMOVED) {
+					removeFromSelection(e.getFigure());
+				}
+				if (e.getType() == DrawModelEvent.Type.DRAWING_CLEARED) {
+					clearSelection();
+				}
+				repaint();
+			}
+		};
+
+		this.model.addModelChangeListener(ml);
 
 		InputEventHandler ieh = new InputEventHandler();
 		addMouseListener(ieh);
@@ -81,23 +97,6 @@ public final class StdDrawView extends JComponent implements DrawView, DrawModel
 
 		addKeyListener(ieh);
 	}
-
-    @Override
-    public void modelChanged(DrawModelEvent e)
-    {
-        Dimension size = getPreferredSize();
-        setPreferredSize(size);
-        revalidate();
-
-        if (e.getType() == DrawModelEvent.Type.FIGURE_REMOVED) {
-            removeFromSelection(e.getFigure());
-        }
-        if (e.getType() == DrawModelEvent.Type.DRAWING_CLEARED) {
-            clearSelection();
-        }
-        repaint();
-        System.out.println("Model changed");
-    }
 
 	@Override
 	public void finalize() throws Throwable {
@@ -271,7 +270,7 @@ public final class StdDrawView extends JComponent implements DrawView, DrawModel
 		return context;
 	}
 
-    /**
+	/**
 	 * Handles all mouse and keyboard events for the StdDrawView.
 	 * 
 	 * @author Christoph Denzler
