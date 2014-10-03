@@ -5,7 +5,7 @@
 	<bean id="drawModel" class="jdraw.std.StdDrawModel"/>
 
 	<bean id="drawView" class="jdraw.std.StdDrawView" singleton="false">
-		<constructor-arg><ref bean="drawModel"/></constructor-arg>
+		<constructor-arg ref="drawModel"/>
 	</bean>
 
 	<bean id="drawContext" class="jdraw.std.StdContext" singleton="false"

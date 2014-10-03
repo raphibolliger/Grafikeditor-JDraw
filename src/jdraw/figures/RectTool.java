@@ -26,7 +26,7 @@ import jdraw.framework.DrawView;
  */
 public class RectTool implements DrawTool {
   
-	/** 
+	/** Line
 	 * the image resource path. 
 	 */
 	private static final String IMAGES = "/images/";
