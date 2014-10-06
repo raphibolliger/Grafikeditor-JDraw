@@ -11,7 +11,7 @@ import java.util.List;
 
 public class Oval implements Figure {
 
-    java.awt.geom.Ellipse2D.Double oval;
+    private java.awt.geom.Ellipse2D.Double oval;
     private LinkedList<FigureListener> figureListeners = new LinkedList<>();
 
     public Oval(int x, int y, int w, int h)
@@ -32,7 +32,7 @@ public class Oval implements Figure {
     public void move(int dx, int dy) {
         if (dx == 0 && dy == 0)
             return;
-        oval.setFrame(oval.x + dx, oval.y + dy, oval.width + dx, oval.height + dy);
+        setLocation(dx, dy);
         for(FigureListener l : figureListeners) l.figureChanged(new FigureEvent(this));
     }
 
@@ -71,4 +71,11 @@ public class Oval implements Figure {
     public Figure clone() {
         return null;
     }
+
+    public void setLocation (int x, int y)
+    {
+        oval.x = oval.x + x;
+        oval.y = oval.y + y;
+    }
+
 }
