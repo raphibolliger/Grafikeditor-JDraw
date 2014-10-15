@@ -21,6 +21,7 @@ public interface PointConstrainer {
 	 * 
 	 * @param p mouse coordinates
 	 * @return constrained coordinates
+     * DrawView noch übergeben für SnapView, zusäthliche übergaben für Ctrl und Shift
 	 */
 	Point constrainPoint(Point p);
 
