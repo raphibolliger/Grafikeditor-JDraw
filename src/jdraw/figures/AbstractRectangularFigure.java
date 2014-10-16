@@ -15,7 +15,7 @@ public abstract class AbstractRectangularFigure extends AbstractFigure {
         Rectangle original = new Rectangle(rectangle);
         rectangle.setFrameFromDiagonal(origin, corner);
         if (!original.equals(rectangle)) {
-            probagateFigureEvent();
+            propagateFigureEvent();
         }
     }
 
@@ -28,7 +28,7 @@ public abstract class AbstractRectangularFigure extends AbstractFigure {
     public void move(int dx, int dy) {
         if (dx != 0 | dy != 0) {
             rectangle.translate(dx, dy);
-            probagateFigureEvent();
+            propagateFigureEvent();
         }
     }
 

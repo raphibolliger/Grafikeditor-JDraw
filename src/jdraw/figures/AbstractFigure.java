@@ -43,7 +43,7 @@ public abstract class AbstractFigure implements Figure {
 
     }
 
-    protected void probagateFigureEvent(){
+    protected void propagateFigureEvent(){
         FigureEvent fe = new FigureEvent(this);
         FigureListener[] copy = figureListeners.toArray(new FigureListener[figureListeners.size()]);
         for (FigureListener l : copy) l.figureChanged(fe);

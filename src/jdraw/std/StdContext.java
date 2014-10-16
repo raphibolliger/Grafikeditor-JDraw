@@ -176,8 +176,8 @@ public class StdContext extends AbstractContext {
 		// TODO Add new figure tools here
 		DrawTool rectangleTool = new RectTool(this, "Rectangle", "rectangle.png");
 		addTool(rectangleTool);
-        //DrawTool lineTool = new LineTool(this);
-        //addTool(lineTool);
+        DrawTool lineTool = new LineTool(this, "Line", "line.png");
+        addTool(lineTool);
         DrawTool ovalTool = new OvalTool(this, "Oval", "oval.png");
         addTool(ovalTool);
 	}
