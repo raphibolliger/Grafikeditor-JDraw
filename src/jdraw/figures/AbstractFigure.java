@@ -11,6 +11,7 @@ import java.util.List;
 public abstract class AbstractFigure implements Figure {
 
     private List<FigureListener> figureListeners = new LinkedList<>();
+    protected List<FigureHandle> figureHandles = new LinkedList<>();
 
     @Override
     public void addFigureListener(FigureListener listener) {
@@ -32,7 +33,14 @@ public abstract class AbstractFigure implements Figure {
 
     @Override
     public List<FigureHandle> getHandles() {
-        return null;
+        return figureHandles;
+    }
+
+    public void setFigureHandles(FigureHandle newHandle) {
+        if (!figureHandles.contains(newHandle)) {
+            figureHandles.add(newHandle);
+        }
+
     }
 
     protected void probagateFigureEvent(){

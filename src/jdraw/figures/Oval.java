@@ -1,13 +1,6 @@
 package jdraw.figures;
 
-import jdraw.framework.Figure;
-import jdraw.framework.FigureEvent;
-import jdraw.framework.FigureHandle;
-import jdraw.framework.FigureListener;
-
 import java.awt.*;
-import java.util.*;
-import java.util.List;
 
 public class Oval extends AbstractRectangularFigure {
 
