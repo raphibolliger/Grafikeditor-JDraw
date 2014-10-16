@@ -6,8 +6,8 @@ public abstract class AbstractRectangularFigure extends AbstractFigure {
 
     private Rectangle rectangle = null;
 
-    protected AbstractRectangularFigure(Point origin) {
-        rectangle = new Rectangle(origin);
+    protected AbstractRectangularFigure(Point origin, int w, int h) {
+        rectangle = new Rectangle(origin.x, origin.y, w, h);
     }
 
     @Override
@@ -17,6 +17,11 @@ public abstract class AbstractRectangularFigure extends AbstractFigure {
         if (!original.equals(rectangle)) {
             probagateFigureEvent();
         }
+    }
+
+    @Override
+    public Rectangle getBounds() {
+        return new Rectangle(rectangle);
     }
 
     @Override

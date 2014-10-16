@@ -1,5 +1,6 @@
 package src.jdraw.test;
 
+import jdraw.figures.Rect;
 import jdraw.framework.Figure;
 import jdraw.framework.FigureEvent;
 import jdraw.framework.FigureListener;
@@ -16,7 +17,8 @@ public class RectangleTest {
 
 	@Before
 	public void setUp() {
-		f = new jdraw.figures.Rect(0, 0, 20, 10);
+		//f = new jdraw.figures.Rect(0, 0, 20, 10);
+        f = new Rect(0, 0);
 		cnt = 0;
 	}
 
