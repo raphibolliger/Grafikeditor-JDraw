@@ -13,6 +13,7 @@ public class Rect extends AbstractRectangularFigure {
 
     public Rect(int x, int y) {
         super(new Point(x, y), 0, 0);
+
         setFigureHandles(new FigureHandleNW(this));
         setFigureHandles(new FigureHandleN(this));
         setFigureHandles(new FigureHandleNE(this));
