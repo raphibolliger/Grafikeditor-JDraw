@@ -16,14 +16,11 @@ import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
 
+import jdraw.figures.GroupFigure;
 import jdraw.figures.OvalTool;
 import jdraw.figures.LineTool;
 import jdraw.figures.RectTool;
-import jdraw.framework.DrawModel;
-import jdraw.framework.DrawTool;
-import jdraw.framework.DrawToolFactory;
-import jdraw.framework.DrawView;
-import jdraw.framework.Figure;
+import jdraw.framework.*;
 
 /**
  * Standard implementation of interface DrawContext.
@@ -91,17 +88,63 @@ public class StdContext extends AbstractContext {
 		});
 
 		editMenu.addSeparator();
+
+        JMenuItem copy = new JMenuItem("Copy");
+        copy.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                LinkedList<Figure> figures = new LinkedList<Figure>(getView().getSelection());
+                LinkedList<Figure> copyedFigures = new LinkedList<Figure>();
+                for (Figure f : figures) {
+                    Figure fcopy = f.clone();
+                    getModel().addFigure(f);
+                    getView().addToSelection(fcopy);
+                }
+            }
+        });
+        editMenu.add(copy);
+
 		editMenu.add("Cut").setEnabled(false);
-		editMenu.add("Copy").setEnabled(false);
 		editMenu.add("Paste").setEnabled(false);
 
 		editMenu.addSeparator();
 		JMenuItem group = new JMenuItem("Group");
-		group.setEnabled(false);
+        group.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                List<Figure> selection = getView().getSelection();
+                if (selection != null && selection.size() >= 2) {
+                    GroupFigure g = new GroupFigure(new LinkedList<Figure>(selection));
+
+                    DrawModel m = getView().getModel();
+                    for (Figure f : selection) {
+                        m.removeFigure(f);
+                    }
+                    m.addFigure(g);
+                    getView().addToSelection(g);
+                }
+            }
+        });
 		editMenu.add(group);
 
+
 		JMenuItem ungroup = new JMenuItem("Ungroup");
-		ungroup.setEnabled(false);
+        ungroup.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                for (Figure g : getView().getSelection()) {
+                    if (g instanceof FigureGroup) {
+                        getModel().removeFigure(g);
+                        for (Figure f : ((FigureGroup)g).getFigureParts()) {
+                            getModel().addFigure(f);
+                            getView().addToSelection(f);
+                        }
+                    }
+                }
+            }
+        });
+
+
 		editMenu.add(ungroup);
 
 		editMenu.addSeparator();
@@ -125,11 +168,29 @@ public class StdContext extends AbstractContext {
 		orderMenu.add(backItem);
 		editMenu.add(orderMenu);
 
-		JMenu grid = new JMenu("Grid...");
-		grid.add("Grid 1");
-		grid.add("Grid 2");
-		grid.add("Grid 3");
-		editMenu.add(grid);
+		JMenu gridMenu = new JMenu("Grid...");
+
+        JMenuItem deactivateGrid = new JMenuItem("No Grid");
+        deactivateGrid.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                getView().setConstrainer(null);
+            }
+        });
+
+        final DrawContext test = this;
+        JMenuItem grid10Item = new JMenuItem("Grid 10");
+        grid10Item.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                getView().setConstrainer(new NumberPointConstrainer(test, "Grid 10", 10, 10));
+            }
+        });
+
+        gridMenu.add(deactivateGrid);
+		gridMenu.add(grid10Item);
+
+        editMenu.add(gridMenu);
 		
 		return editMenu;
 	}
@@ -176,8 +237,8 @@ public class StdContext extends AbstractContext {
 		// TODO Add new figure tools here
 		DrawTool rectangleTool = new RectTool(this, "Rectangle", "rectangle.png");
 		addTool(rectangleTool);
-        DrawTool lineTool = new LineTool(this, "Line", "line.png");
-        addTool(lineTool);
+        //DrawTool lineTool = new LineTool(this, "Line", "line.png");
+        //addTool(lineTool);
         DrawTool ovalTool = new OvalTool(this, "Oval", "oval.png");
         addTool(ovalTool);
 	}

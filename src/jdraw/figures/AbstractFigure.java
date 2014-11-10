@@ -28,7 +28,12 @@ public abstract class AbstractFigure implements Figure {
 
     @Override
     public Figure clone() {
-        return null;
+        try {
+            return (Figure)super.clone();
+        }
+        catch (CloneNotSupportedException e) {
+            throw new InternalError();
+        }
     }
 
     @Override
